@@ -4,14 +4,10 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
-import com.dantrap.inspectapp.ui.theme.InspectAppTheme
+import com.arkivanov.decompose.defaultComponentContext
+import com.dantrap.inspectapp.components.root.RealRootComponent
+import com.dantrap.inspectapp.core.theme.InspectAppTheme
+import com.dantrap.inspectapp.ui.root.RootUi
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -19,31 +15,15 @@ class MainActivity : ComponentActivity() {
 
         enableEdgeToEdge()
 
+        val rootComponent = RealRootComponent(
+            componentContext = defaultComponentContext(),
+            appContainer = (application as App).appContainer
+        )
+
         setContent {
             InspectAppTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Greeting(
-                        name = "Android",
-                        modifier = Modifier.padding(innerPadding)
-                    )
-                }
+                RootUi(rootComponent)
             }
         }
-    }
-}
-
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
-
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    InspectAppTheme {
-        Greeting("Android")
     }
 }

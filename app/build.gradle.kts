@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    alias(libs.plugins.kotlin.serialization)
 }
 
 android {
@@ -10,7 +11,7 @@ android {
 
     defaultConfig {
         applicationId = "com.dantrap.inspectapp"
-        minSdk = 24
+        minSdk = 23
         targetSdk = 35
         versionCode = 1
         versionName = "1.0"
@@ -19,12 +20,24 @@ android {
     }
 
     buildTypes {
-        release {
+        debug {
+            isDebuggable = true
             isMinifyEnabled = false
+            applicationIdSuffix = ".debug"
+            versionNameSuffix = "-debug"
+        }
+
+        release {
+            isMinifyEnabled = true
+            isShrinkResources = true
+            isDebuggable = false
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
@@ -43,22 +56,13 @@ android {
 }
 
 dependencies {
-
+    implementation(libs.androidx.appcompat)
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime.ktx)
-    implementation(libs.activity.compose)
-    implementation(platform(libs.compose.bom))
-    implementation(libs.compose.ui)
-    implementation(libs.compose.tooling.preview)
-    implementation(libs.compose.material3)
-    implementation(libs.bundles.compose)
-    testImplementation(libs.junit)
 
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.compose.bom))
-    androidTestImplementation(libs.compose.test.junit4)
+    implementation(platform(libs.compose.bom))
+    implementation(libs.bundles.compose)
+
+    implementation(libs.bundles.decompose)
 
     debugImplementation(libs.compose.tooling)
-    debugImplementation(libs.compose.test.manifest)
 }

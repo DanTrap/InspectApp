@@ -1,4 +1,4 @@
-package com.dantrap.inspectapp.ui.theme
+package com.dantrap.inspectapp.core.theme
 
 import androidx.compose.ui.graphics.Color
 
