@@ -17,3 +17,5 @@ captures/
 
 # Kotlin
 .kotlin/
+
+/release.keystore

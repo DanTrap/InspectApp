@@ -9,6 +9,4 @@
     public static *** d(...);
     public static *** e(...);
 }
--keep,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation
--keep class java.lang.invoke.** { *; }
--dontwarn org.slf4j.impl.StaticLoggerBinder
+-keep,allowoptimization,allowobfuscation,allowshrinking class kotlin.coroutines.Continuation { *; }

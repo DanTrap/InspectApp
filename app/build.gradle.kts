@@ -1,3 +1,5 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -19,6 +21,20 @@ android {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
     }
 
+    val localProperties = Properties().apply {
+        val localPropertiesFile = rootProject.file("local.properties")
+        if (localPropertiesFile.exists()) load(localPropertiesFile.inputStream())
+    }
+
+    signingConfigs {
+        create("release") {
+            storeFile = rootProject.file(localProperties["keyStorePath"] as String)
+            storePassword = localProperties["keyStorePassword"] as String
+            keyAlias = localProperties["keyAlias"] as String
+            keyPassword = localProperties["keyPassword"] as String
+        }
+    }
+
     buildTypes {
         debug {
             isDebuggable = true
@@ -32,12 +48,12 @@ android {
             isShrinkResources = true
             isDebuggable = false
 
+            signingConfig = signingConfigs.getByName("release")
+
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
-
-            signingConfig = signingConfigs.getByName("debug")
         }
     }
 
